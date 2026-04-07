@@ -189,11 +189,47 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
   <div class="cart-wrap">
     <div class="brand-head">
       <h2>Content Creator Program</h2>
-      <p class="small">Apply in 4 simple steps.</p>
+      <p class="small">Apply in 3 simple steps.</p>
       <button class="secondary-btn" onclick="showPage('home')">Back to Home</button>
     </div>
 
-    <div class="cart-card" style="margin-top:28px;">
+    <div class="features" style="margin-top:24px;">
+      <div class="feature" style="text-align:left;">
+        <h3>Step 1</h3>
+        <p>Enter your TikTok follower count below to continue.</p>
+        <input id="tiktokFollowers" type="number" min="0" placeholder="Enter TikTok followers" style="width:100%;margin-top:10px;">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+          <button type="button" onclick="unlockCreatorStep2()">Continue to Step 2</button>
+        </div>
+      </div>
+
+      <div class="feature" id="creatorStep2Card" style="text-align:left;opacity:.45;pointer-events:none;">
+        <h3>Step 2</h3>
+        <p>When someone places an order using your creator code, you receive <strong>5% of the profit</strong> from that order.</p>
+      </div>
+
+      <div class="feature" id="creatorStep3Card" style="text-align:left;opacity:.45;pointer-events:none;">
+        <h3>Step 3</h3>
+        <p>Create your own 5-character code or generate a random one.</p>
+        <input id="customCreatorCode" type="text" maxlength="5" placeholder="Enter 5-character code" style="width:100%;margin:10px 0; text-transform:uppercase;" oninput="syncCreatorCode(this.value)">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button type="button" onclick="generateCreatorCode()">Generate Random Code</button>
+          <button type="button" class="secondary-btn" onclick="useCustomCreatorCode()">Use My Code</button>
+        </div>
+        <p style="margin-top:12px;">Selected Code: <strong id="selectedCreatorCode">Not selected</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="page">
+  <div class="cart-wrap">
+    <div class="brand-head">
+      <h2>Live Support</h2>
+      <p class="small">Chat with a live agent below.</p>
+    </div>
+
+    <div class="cart-card">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
         <div>
           <h3 style="margin:0;">Live Agent Chat</h3>
