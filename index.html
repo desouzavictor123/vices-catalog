@@ -143,18 +143,20 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
     </div>
 
     <div class="cart-card" style="text-align:center;">
-      <div style="border-radius:16px;overflow:hidden;border:1px solid #d4af37;">
+      <div style="border-radius:16px;overflow:hidden;border:1px solid #d4af37;background:#0d0d0d;">
         <iframe
           title="Bethel Connecticut Map"
           src="https://www.openstreetmap.org/export/embed.html?bbox=-73.4700%2C41.3500%2C-73.3500%2C41.4300&layer=mapnik&marker=41.3712%2C-73.4140"
-          style="width:100%;height:300px;border:0;display:block;"
+          style="width:100%;height:260px;border:0;display:block;"
           loading="lazy"></iframe>
       </div>
 
       <p style="margin-top:18px;">If you are within <strong>15 miles</strong> of Bethel, Connecticut, pickup is available. If you are farther than 15 miles, shipping will be selected automatically.</p>
+      <p class="small">On iPhone, tap the button below and allow location access when Safari asks.</p>
 
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:14px;">
-        <button onclick="checkDistanceAndEnter()">Check Distance & Enter</button>
+        <button onclick="checkDistanceAndEnter()">Use My Location</button>
+        <button class="secondary-btn" onclick="enterWithShipping()">Continue With Shipping</button>
       </div>
 
       <p id="distanceStatus" class="small" style="margin-top:16px;">Location check required before entering the site.</p>
@@ -474,6 +476,13 @@ function getDistanceMiles(lat1, lon1, lat2, lon2){
   return R * c;
 }
 
+function enterWithShipping(){
+  localStorage.setItem('deliveryPreference', '10');
+  sessionStorage.setItem('entryChecked', 'true');
+  showPage('home');
+  showToast('Shipping selected automatically');
+}
+
 function checkDistanceAndEnter(){
   const status = document.getElementById('distanceStatus');
   const bethelLat = 41.3712;
@@ -482,6 +491,7 @@ function checkDistanceAndEnter(){
   if(!navigator.geolocation){
     if(status) status.textContent = 'Location is not supported on this device. Shipping will be selected automatically.';
     localStorage.setItem('deliveryPreference', '10');
+    sessionStorage.setItem('entryChecked', 'true');
     showPage('home');
     showToast('Shipping selected automatically');
     return;
@@ -494,6 +504,7 @@ function checkDistanceAndEnter(){
       const userLat = position.coords.latitude;
       const userLon = position.coords.longitude;
       const miles = getDistanceMiles(userLat, userLon, bethelLat, bethelLon);
+      sessionStorage.setItem('entryChecked', 'true');
 
       if(miles <= 15){
         localStorage.setItem('deliveryPreference', '0');
@@ -510,6 +521,7 @@ function checkDistanceAndEnter(){
     () => {
       if(status) status.textContent = 'Location was not shared. Shipping will be selected automatically.';
       localStorage.setItem('deliveryPreference', '10');
+      sessionStorage.setItem('entryChecked', 'true');
       showPage('home');
       showToast('Shipping selected automatically');
     },
@@ -878,17 +890,23 @@ function sendAgentMessage(){
 document.addEventListener('DOMContentLoaded', () => {
   renderCatalogs();
   const hash = window.location.hash.replace('#', '');
+  const entryChecked = sessionStorage.getItem('entryChecked') === 'true';
 
-  if(hash && document.getElementById(hash) && hash !== 'entryGate'){
-    showPage(hash);
-  } else {
-    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+  if(!entryChecked){
+    document.querySelectorAll('.page').forEach(page => {
+      page.classList.remove('active');
+      page.style.display = '';
+    });
     const entry = document.getElementById('entryGate');
     if(entry){
       entry.classList.add('active');
       entry.style.display = 'block';
     }
     window.location.hash = 'entryGate';
+  } else if(hash && document.getElementById(hash) && hash !== 'entryGate'){
+    showPage(hash);
+  } else {
+    showPage('home');
   }
 
   renderCart();
