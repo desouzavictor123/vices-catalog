@@ -131,6 +131,7 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
     <a href="#cart" onclick="showPage('cart')">Cart</a>
     <a href="#creatorProgram" onclick="showPage('creatorProgram')">Creator Program</a>
     <a href="#contact" onclick="showPage('contact')">Contact</a>
+    <a href="#refunds" onclick="showPage('refunds')">Refunds</a>
   </nav>
 </header>
 
@@ -180,12 +181,12 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
     <div class="cart-card" style="text-align:center;">
       <div style="font-size:2rem;">📦</div>
       <div style="font-size:1.6rem;font-weight:800;">$80</div>
-      <div class="small">Pickup per item</div>
+      <div class="small">Pickup per item • Arrives in 2–3 weeks</div>
     </div>
     <div class="cart-card" style="text-align:center;">
       <div style="font-size:2rem;">🚚</div>
       <div style="font-size:1.6rem;font-weight:800;">$10</div>
-      <div class="small">Shipping per item</div>
+      <div class="small">Shipping per item • Arrives in 3–4 weeks</div>
     </div>
     <div class="cart-card" style="text-align:center;">
       <div style="font-size:2rem;">⏱️</div>
@@ -216,8 +217,9 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
     <div class="features" style="margin-top:24px;">
       <div class="feature" style="text-align:left;">
         <h3>Step 1</h3>
-        <p>Enter your follower count below to continue.</p>
+        <p>Enter your TikTok follower count and TikTok username to continue.</p>
         <input id="creatorFollowerCount" type="number" min="0" placeholder="Enter follower count" style="width:100%;margin-top:10px;">
+        <input id="tiktokUsername" type="text" placeholder="Enter TikTok username" style="width:100%;margin-top:10px;">
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
           <button type="button" onclick="unlockCreatorStep2()">Continue to Step 2</button>
         </div>
@@ -226,7 +228,7 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
       <div class="feature" id="creatorStep2Card" style="text-align:left;opacity:.45;pointer-events:none;">
         <h3>Step 2</h3>
         <p>When someone places an order using your creator code, you receive <strong>5% of the profit</strong> from that order.</p>
-        <input id="tiktokUsername" type="text" placeholder="Enter TikTok username" style="width:100%;margin-top:10px;">
+        <button type="button" class="secondary-btn" onclick="unlockCreatorStep3()" style="margin-top:10px;">I Read and Understood</button>
       </div>
 
       <div class="feature" id="creatorStep3Card" style="text-align:left;opacity:.45;pointer-events:none;">
@@ -269,6 +271,37 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
         <input id="agentChatInput" type="text" placeholder="Type your message here" style="flex:1;min-width:220px;">
         <button onclick="sendAgentMessage()">Send</button>
       </div>
+    </div>
+  </div>
+    <div class="cart-card" style="text-align:center;max-width:260px;margin:0 auto 30px;">
+      <div style="font-size:2rem;">💰</div>
+      <div style="font-size:1.2rem;font-weight:800;">100% Refund Guarantee</div>
+      <div class="small">Refunds available within 7 days after purchase.</div>
+      <button class="secondary-btn" onclick="showPage('refunds')" style="margin-top:10px;">Refund Policy</button>
+    </div>
+</section>
+
+<section id="refunds" class="page">
+  <div class="cart-wrap">
+    <div class="brand-head">
+      <h2>Refund Policy</h2>
+      <p class="small">Simple and transparent refund protection.</p>
+      <button class="secondary-btn" onclick="showPage('home')">Back to Home</button>
+    </div>
+
+    <div class="cart-card" style="margin-top:20px;">
+      <h3>Refund Terms</h3>
+      <p>
+        All purchases are protected by a <strong>100% refund guarantee</strong>.
+        Refund requests must be made within <strong>7 days after purchase</strong>.
+      </p>
+
+      <h3 style="margin-top:18px;">How to Request a Refund</h3>
+      <p>
+        Contact support through the Live Chat page or send an SMS with your order details.
+      </p>
+
+      <button onclick="showPage('contact')" style="margin-top:14px;">Request Refund</button>
     </div>
   </div>
 </section>
@@ -714,14 +747,16 @@ function orderSMS(){
 
 function unlockCreatorStep2(){
   const followerInput = document.getElementById('creatorFollowerCount');
+  const usernameInput = document.getElementById('tiktokUsername');
   const step2 = document.getElementById('creatorStep2Card');
   const step3 = document.getElementById('creatorStep3Card');
 
   const followers = Number(followerInput?.value || 0);
+  const username = usernameInput?.value.trim() || '';
 
-  if(followers <= 0){
+  if(followers < 600 || !username){
     showPage('home');
-    showToast('Follower count required to continue');
+    showToast('You do not meet creator requirements');
     return;
   }
 
@@ -729,6 +764,14 @@ function unlockCreatorStep2(){
     step2.style.opacity = '1';
     step2.style.pointerEvents = 'auto';
   }
+  if(step3){
+    step3.style.opacity = '.45';
+    step3.style.pointerEvents = 'none';
+  }
+}
+
+function unlockCreatorStep3(){
+  const step3 = document.getElementById('creatorStep3Card');
   if(step3){
     step3.style.opacity = '1';
     step3.style.pointerEvents = 'auto';
