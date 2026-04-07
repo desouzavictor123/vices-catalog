@@ -134,7 +134,7 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
   </nav>
 </header>
 
-<section id="entryGate" class="page active">
+<section id="entryGate" class="page active" style="display:block;">
   <div class="cart-wrap">
     <div class="brand-head">
       <h2>Welcome to Vics Catalog</h2>
@@ -411,9 +411,15 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
 
 <script>
 function showPage(pageId){
-  document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+    page.style.display = '';
+  });
   const page = document.getElementById(pageId);
-  if(page) page.classList.add('active');
+  if(page){
+    page.classList.add('active');
+    page.style.display = 'block';
+  }
   if(pageId === 'cart') renderCart();
   if(['sneakers','bags','watches','clothing'].includes(pageId)) renderCatalogs();
   if(pageId === 'sneakers'){
@@ -829,11 +835,19 @@ function sendAgentMessage(){
 document.addEventListener('DOMContentLoaded', () => {
   renderCatalogs();
   const hash = window.location.hash.replace('#', '');
+
   if(hash && document.getElementById(hash) && hash !== 'entryGate'){
     showPage(hash);
   } else {
-    showPage('entryGate');
+    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+    const entry = document.getElementById('entryGate');
+    if(entry){
+      entry.classList.add('active');
+      entry.style.display = 'block';
+    }
+    window.location.hash = 'entryGate';
   }
+
   renderCart();
 });
 </script>
