@@ -135,52 +135,57 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
 </header>
 
 <section id="home" class="page active">
-  <div class="hero">
-    <h2>Modern Catalog. Simple Ordering.</h2>
-    <p>Browse by category, choose an item, add it to your cart, then select pickup or shipping and place your order by SMS.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <button class="primary-btn" onclick="showPage('shop')">Shop Now</button>
+  <div class="hero" style="padding:40px 0 20px;">
+    <div style="display:inline-block;padding:8px 14px;border:1px solid #d4af37;border-radius:999px;color:#f3d97a;font-size:.9rem;margin-bottom:18px;background:rgba(212,175,55,0.08);">
+      Premium catalog • Simple checkout • Fast support
+    </div>
+    <h2>Shop Smarter With Vics Catalog</h2>
+    <p>Browse curated items by category, add what you want to your cart, choose pickup or shipping, and send your order by SMS in seconds.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px;">
+      <button class="primary-btn" onclick="showPage('shop')">Start Shopping</button>
       <button class="secondary-btn" onclick="showPage('cart')">View Cart</button>
-      <button class="secondary-btn" onclick="showPage('creatorProgram')">Content Creator Program</button>
-      <button class="secondary-btn" onclick="showPage('contact')">Contact</button>
+      <button class="secondary-btn" onclick="showPage('creatorProgram')">Creator Program</button>
+      <button class="secondary-btn" onclick="showPage('contact')">Live Support</button>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:10px auto 34px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
+    <div class="cart-card" style="text-align:center;">
+      <div style="font-size:1.9rem;font-weight:800;">$80</div>
+      <div class="small">Pickup per item</div>
+    </div>
+    <div class="cart-card" style="text-align:center;">
+      <div style="font-size:1.9rem;font-weight:800;">$90</div>
+      <div class="small">Shipping per item</div>
+    </div>
+    <div class="cart-card" style="text-align:center;">
+      <div style="font-size:1.9rem;font-weight:800;">2–3 Weeks</div>
+      <div class="small">Typical arrival time</div>
+    </div>
+    <div class="cart-card" style="text-align:center;">
+      <div style="font-size:1.9rem;font-weight:800;">24/7</div>
+      <div class="small">Live support access</div>
     </div>
   </div>
 
   <div class="features">
     <div class="feature">
-      <h3>Good Quality Items</h3>
-      <p>Clean catalog layout with easy category browsing and fast ordering.</p>
+      <h3>Clean Shopping Flow</h3>
+      <p>Browse categories, select items, and place your order without a complicated checkout process.</p>
     </div>
     <div class="feature">
-      <h3>2–3 Weeks Arrival</h3>
-      <p>Orders typically arrive within 2–3 weeks depending on availability.</p>
+      <h3>Flexible Delivery</h3>
+      <p>Choose the option that works best for you with simple pickup or shipping pricing.</p>
     </div>
     <div class="feature">
-      <h3>Secure Checkout</h3>
-      <p>Customers can review the cart, choose delivery, and send an SMS order.</p>
-    </div>
-    <div class="feature">
-      <h3>Content Creator Program</h3>
-      <p>Join the creator program and earn 5% from orders using your personal code.</p>
+      <h3>Creator Program</h3>
+      <p>Join the creator program and earn from orders that use your personal code.</p>
       <button class="secondary-btn" onclick="showPage('creatorProgram')">Join Program</button>
     </div>
     <div class="feature">
       <h3>Live Support Chat</h3>
-      <p>Need help? Chat with our live agent anytime from the contact page.</p>
+      <p>Need help with an item or an order? Open the contact page and message the live agent.</p>
       <button class="secondary-btn" onclick="showPage('contact')">Open Chat</button>
-    </div>
-  </div>
-    <div class="feature">
-      <h3>2–3 Weeks Arrival</h3>
-      <p>Orders typically arrive within 2–3 weeks depending on availability.</p>
-    </div>
-    <div class="feature">
-      <h3>Secure Checkout</h3>
-      <p>Customers can review the cart, choose delivery, and send an SMS order.</p>
-    </div>
-    <div class="feature">
-      <h3>Cash App or Zelle Accepted</h3>
-      <p>Payment instructions appear clearly in the cart before checkout.</p>
     </div>
   </div>
 </section>
