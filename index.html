@@ -494,6 +494,9 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
 
       <div style="display:grid;gap:12px;margin-top:18px;max-width:420px;">
         <input id="customerName" type="text" placeholder="Customer name">
+        <input id="customerAddress" type="text" placeholder="Street address">
+        <input id="customerCity" type="text" placeholder="City">
+        <input id="customerState" type="text" placeholder="State">
         <input id="customerSize" type="text" placeholder="Size (example: 9, M, 32)">
         <input id="customerColor" type="text" placeholder="Color choice for multi-item photos (optional)">
         <select id="paymentMethod">
@@ -562,7 +565,7 @@ function enterWithShipping(){
   localStorage.setItem('deliveryPreference', '10');
   sessionStorage.setItem('entryChecked', 'true');
   showPage('home');
-  showToast('Shipping selected automatically');
+  showToast('Shipping selected manually');
 }
 
 function checkDistanceAndEnter(){
@@ -571,11 +574,8 @@ function checkDistanceAndEnter(){
   const bethelLon = -73.4140;
 
   if(!navigator.geolocation){
-    if(status) status.textContent = 'Location is not supported on this device. Shipping will be selected automatically.';
-    localStorage.setItem('deliveryPreference', '10');
-    sessionStorage.setItem('entryChecked', 'true');
-    showPage('home');
-    showToast('Shipping selected automatically');
+    if(status) status.textContent = 'Location is not supported on this device. Please continue with shipping manually.';
+    showToast('Location unavailable');
     return;
   }
 
@@ -601,11 +601,8 @@ function checkDistanceAndEnter(){
       }
     },
     () => {
-      if(status) status.textContent = 'Location was not shared. Shipping will be selected automatically.';
-      localStorage.setItem('deliveryPreference', '10');
-      sessionStorage.setItem('entryChecked', 'true');
-      showPage('home');
-      showToast('Shipping selected automatically');
+      if(status) status.textContent = 'Location was not shared. Please choose shipping manually or allow location access.';
+      showToast('Location permission needed');
     },
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
   );
@@ -726,7 +723,7 @@ function renderCart(){
   const empty = document.getElementById('emptyCart');
   const deliverySelect = document.getElementById('delivery');
   const savedPreference = localStorage.getItem('deliveryPreference');
-  if(deliverySelect && savedPreference !== null){
+  if(deliverySelect && (savedPreference === '0' || savedPreference === '10')){
     deliverySelect.value = savedPreference;
   }
   const deliveryPrice = Number(document.getElementById('delivery').value);
@@ -888,10 +885,13 @@ function orderSMS(){
     return;
   }
   const customerName = document.getElementById('customerName').value.trim();
+  const customerAddress = document.getElementById('customerAddress').value.trim();
+  const customerCity = document.getElementById('customerCity').value.trim();
+  const customerState = document.getElementById('customerState').value.trim();
   const customerSize = document.getElementById('customerSize').value.trim();
   const customerColor = document.getElementById('customerColor').value.trim();
-  if(!customerName || !customerSize){
-    alert('Please enter customer name and size');
+  if(!customerName || !customerAddress || !customerCity || !customerState || !customerSize){
+    alert('Please enter name, street address, city, state, and size');
     return;
   }
   const deliverySelect = document.getElementById('delivery');
@@ -904,7 +904,7 @@ function orderSMS(){
     alert('Please select Cash App or Zelle');
     return;
   }
-  const message = `Name: ${customerName} | Size: ${customerSize}${customerColor ? ` | Color: ${customerColor}` : ''} | Order: ${itemsText} | ${deliveryText} | Total: $${total} | Payment Method: ${paymentMethod}${creatorCode ? ` | Creator Code: ${creatorCode}` : ''}`;
+  const message = `Name: ${customerName} | Address: ${customerAddress}, ${customerCity}, ${customerState} | Size: ${customerSize}${customerColor ? ` | Color: ${customerColor}` : ''} | Order: ${itemsText} | ${deliveryText} | Total: $${total} | Payment Method: ${paymentMethod}${creatorCode ? ` | Creator Code: ${creatorCode}` : ''}`;
   window.location.href = `sms:+12033124955?body=${encodeURIComponent(message)}`;
 }
 
