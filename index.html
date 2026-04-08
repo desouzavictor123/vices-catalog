@@ -425,7 +425,8 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
 
       <div style="display:grid;gap:12px;margin-top:18px;max-width:420px;">
         <input id="customerName" type="text" placeholder="Customer name">
-        <input id="customerSize" type="text" placeholder="Size / option (example: 9, M, 32, Black)">
+        <input id="customerSize" type="text" placeholder="Size (example: 9, M, 32)">
+        <input id="customerColor" type="text" placeholder="Color choice for multi-item photos (optional)">
         <select id="paymentMethod">
           <option value="">Select payment method</option>
           <option value="Cash App">Cash App</option>
@@ -739,6 +740,7 @@ function orderSMS(){
   }
   const customerName = document.getElementById('customerName').value.trim();
   const customerSize = document.getElementById('customerSize').value.trim();
+  const customerColor = document.getElementById('customerColor').value.trim();
   if(!customerName || !customerSize){
     alert('Please enter customer name and size');
     return;
@@ -753,7 +755,7 @@ function orderSMS(){
     alert('Please select Cash App or Zelle');
     return;
   }
-  const message = `Name: ${customerName} | Size: ${customerSize} | Order: ${itemsText} | ${deliveryText} | Total: $${total} | Payment Method: ${paymentMethod}${creatorCode ? ` | Creator Code: ${creatorCode}` : ''}`;
+  const message = `Name: ${customerName} | Size: ${customerSize}${customerColor ? ` | Color: ${customerColor}` : ''} | Order: ${itemsText} | ${deliveryText} | Total: $${total} | Payment Method: ${paymentMethod}${creatorCode ? ` | Creator Code: ${creatorCode}` : ''}`;
   window.location.href = `sms:+12033124955?body=${encodeURIComponent(message)}`;
 }
 
