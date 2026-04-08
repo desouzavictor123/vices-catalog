@@ -397,10 +397,79 @@ input,select{background:#0d0d0d;color:#d4af37;border:1px solid #d4af37}
 <section id="clothing" class="page">
   <div class="brand-head">
     <h2>Clothing</h2>
-    <p class="small">Tops, bottoms, and matching sets</p>
+    <p class="small">Choose a clothing category</p>
     <button class="secondary-btn" onclick="showPage('shop')">Back to Shop</button>
   </div>
-  <div id="clothingGrid" class="catalog"></div>
+
+  <div class="brand-grid" style="margin-bottom:30px;">
+    <div class="brand-card">
+      <h3>Spider</h3>
+      <p>Open the Spider collection</p>
+      <button onclick="toggleBrand('spiderGrid')">Open Spider</button>
+    </div>
+  </div>
+
+  <div id="spiderWrap" style="display:none;max-width:1100px;margin:0 auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+      <h3 style="margin:0;">Spider Collection</h3>
+      <button class="secondary-btn" onclick="closeBrand('spiderGrid')">Close Spider</button>
+    </div>
+
+    <div class="brand-grid" style="margin-bottom:24px;">
+      <div class="brand-card">
+        <h3>Hoodies</h3>
+        <p>Open hoodie styles</p>
+        <button onclick="toggleSpiderCategory('spiderHoodiesGrid')">Open Hoodies</button>
+      </div>
+      <div class="brand-card">
+        <h3>Tees</h3>
+        <p>Open tee styles</p>
+        <button onclick="toggleSpiderCategory('spiderTeesGrid')">Open Tees</button>
+      </div>
+      <div class="brand-card">
+        <h3>Sweatpants</h3>
+        <p>Open sweatpants styles</p>
+        <button onclick="toggleSpiderCategory('spiderSweatpantsGrid')">Open Sweatpants</button>
+      </div>
+      <div class="brand-card">
+        <h3>Sets</h3>
+        <p>Open matching sets</p>
+        <button onclick="toggleSpiderCategory('spiderSetsGrid')">Open Sets</button>
+      </div>
+    </div>
+
+    <div id="spiderHoodiesWrap" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+        <h3 style="margin:0;">Spider Hoodies</h3>
+        <button class="secondary-btn" onclick="closeSpiderCategory('spiderHoodiesGrid')">Close Hoodies</button>
+      </div>
+      <div id="spiderHoodiesGrid" class="catalog"></div>
+    </div>
+
+    <div id="spiderTeesWrap" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+        <h3 style="margin:0;">Spider Tees</h3>
+        <button class="secondary-btn" onclick="closeSpiderCategory('spiderTeesGrid')">Close Tees</button>
+      </div>
+      <div id="spiderTeesGrid" class="catalog"></div>
+    </div>
+
+    <div id="spiderSweatpantsWrap" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+        <h3 style="margin:0;">Spider Sweatpants</h3>
+        <button class="secondary-btn" onclick="closeSpiderCategory('spiderSweatpantsGrid')">Close Sweatpants</button>
+      </div>
+      <div id="spiderSweatpantsGrid" class="catalog"></div>
+    </div>
+
+    <div id="spiderSetsWrap" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+        <h3 style="margin:0;">Spider Sets</h3>
+        <button class="secondary-btn" onclick="closeSpiderCategory('spiderSetsGrid')">Close Sets</button>
+      </div>
+      <div id="spiderSetsGrid" class="catalog"></div>
+    </div>
+  </div>
 </section>
 
 <section id="cart" class="page">
@@ -458,6 +527,18 @@ function showPage(pageId){
   }
   if(pageId === 'cart') renderCart();
   if(['sneakers','bags','watches','clothing'].includes(pageId)) renderCatalogs();
+  if(pageId === 'clothing'){
+    const spiderWrap = document.getElementById('spiderWrap');
+    const spiderHoodiesWrap = document.getElementById('spiderHoodiesWrap');
+    const spiderTeesWrap = document.getElementById('spiderTeesWrap');
+    const spiderSweatpantsWrap = document.getElementById('spiderSweatpantsWrap');
+    const spiderSetsWrap = document.getElementById('spiderSetsWrap');
+    if(spiderWrap) spiderWrap.style.display = 'none';
+    if(spiderHoodiesWrap) spiderHoodiesWrap.style.display = 'none';
+    if(spiderTeesWrap) spiderTeesWrap.style.display = 'none';
+    if(spiderSweatpantsWrap) spiderSweatpantsWrap.style.display = 'none';
+    if(spiderSetsWrap) spiderSetsWrap.style.display = 'none';
+  }
   if(pageId === 'sneakers'){
     const asicsWrap = document.getElementById('asicsWrap');
     const nbWrap = document.getElementById('nbWrap');
@@ -532,6 +613,13 @@ function checkDistanceAndEnter(){
 
 function toggleBrand(gridId){
   renderCatalogs();
+
+  if(gridId === 'spiderGrid'){
+    const spiderWrap = document.getElementById('spiderWrap');
+    if(spiderWrap) spiderWrap.style.display = 'block';
+    return;
+  }
+
   const sections = [
     { grid: 'asicsGrid', wrap: 'asicsWrap' },
     { grid: 'nbGrid', wrap: 'nbWrap' }
@@ -545,8 +633,35 @@ function toggleBrand(gridId){
 }
 
 function closeBrand(gridId){
-  const wrapId = gridId === 'asicsGrid' ? 'asicsWrap' : 'nbWrap';
+  const wrapId = gridId === 'asicsGrid' ? 'asicsWrap' : gridId === 'nbGrid' ? 'nbWrap' : 'spiderWrap';
   const wrap = document.getElementById(wrapId);
+  if(wrap) wrap.style.display = 'none';
+}
+
+function toggleSpiderCategory(gridId){
+  renderCatalogs();
+  const sections = [
+    { grid: 'spiderHoodiesGrid', wrap: 'spiderHoodiesWrap' },
+    { grid: 'spiderTeesGrid', wrap: 'spiderTeesWrap' },
+    { grid: 'spiderSweatpantsGrid', wrap: 'spiderSweatpantsWrap' },
+    { grid: 'spiderSetsGrid', wrap: 'spiderSetsWrap' }
+  ];
+
+  sections.forEach(section => {
+    const wrap = document.getElementById(section.wrap);
+    if(!wrap) return;
+    wrap.style.display = section.grid === gridId ? 'block' : 'none';
+  });
+}
+
+function closeSpiderCategory(gridId){
+  const wrapMap = {
+    spiderHoodiesGrid: 'spiderHoodiesWrap',
+    spiderTeesGrid: 'spiderTeesWrap',
+    spiderSweatpantsGrid: 'spiderSweatpantsWrap',
+    spiderSetsGrid: 'spiderSetsWrap'
+  };
+  const wrap = document.getElementById(wrapMap[gridId]);
   if(wrap) wrap.style.display = 'none';
 }
 
@@ -672,22 +787,22 @@ function renderCatalogs(){
   const asics = Array.from({length:30}, (_,i)=>`ASICS Kayano Colorway #${i+1}`);
 
   const newbalance = [
-  {name:'NB 2002R Grey', img:'images/nb1.jpeg'},
-  {name:'NB 2002R Light Grey', img:'images/nb2.jpeg'},
-  {name:'NB 2002R White Grey', img:'images/nb3.jpeg'},
-  {name:'NB 2002R Navy', img:'images/nb4.jpeg'},
-  {name:'NB 2002R Black Cream', img:'images/nb5.jpeg'},
-  {name:'NB 2002R Dark Navy', img:'images/nb6.jpeg'},
-  {name:'NB 2002R Cream', img:'images/nb7.jpeg'},
-  {name:'NB 2002R Beige', img:'images/nb8.jpeg'},
-  {name:'NB 2002R Stone', img:'images/nb9.jpeg'},
-  {name:'NB 2002R Tan Navy', img:'images/nb10.jpeg'},
-  {name:'NB 2002R White Black', img:'images/nb11.jpeg'},
-  {name:'NB 2002R Sand', img:'images/nb12.jpeg'},
-  {name:'NB 2002R Grey Rugged', img:'images/nb13.jpeg'},
-  {name:'NB 2002R Triple Black', img:'images/nb14.jpeg'},
-  {name:'NB 2002R Grey Black', img:'images/nb15.jpeg'}
-];
+    {name:'NB 2002R Grey', img:'images/nb1.jpeg'},
+    {name:'NB 2002R Light Grey', img:'images/nb2.jpeg'},
+    {name:'NB 2002R White Grey', img:'images/nb3.jpeg'},
+    {name:'NB 2002R Navy', img:'images/nb4.jpeg'},
+    {name:'NB 2002R Black Cream', img:'images/nb5.jpeg'},
+    {name:'NB 2002R Dark Navy', img:'images/nb6.jpeg'},
+    {name:'NB 2002R Cream', img:'images/nb7.jpeg'},
+    {name:'NB 2002R Beige', img:'images/nb8.jpeg'},
+    {name:'NB 2002R Stone', img:'images/nb9.jpeg'},
+    {name:'NB 2002R Tan Navy', img:'images/nb10.jpeg'},
+    {name:'NB 2002R White Black', img:'images/nb11.jpeg'},
+    {name:'NB 2002R Sand', img:'images/nb12.jpeg'},
+    {name:'NB 2002R Grey Rugged', img:'images/nb13.jpeg'},
+    {name:'NB 2002R Triple Black', img:'images/nb14.jpeg'},
+    {name:'NB 2002R Grey Black', img:'images/nb15.jpeg'}
+  ];
 
   const bags = [
     'Everyday Tote - Black','Everyday Tote - Brown','Crossbody Bag - Black','Crossbody Bag - Beige','Mini Backpack - Black','Travel Duffel - Grey'
@@ -697,8 +812,27 @@ function renderCatalogs(){
     'Silver Watch - White Dial','Silver Watch - Black Dial','Gold Watch - Black Dial','Black Watch - Minimal Dial','Two-Tone Watch - White Dial','Chronograph Watch - Silver'
   ];
 
-  const clothing = [
-    'Graphic Tee - Black','Graphic Tee - White','Zip Hoodie - Black','Track Set - Grey','Cargo Pants - Black','Denim Jacket - Blue'
+  const spiderHoodies = [
+    'Spider Hoodie Black',
+    'Spider Hoodie Pink',
+    'Spider Hoodie Blue',
+    'Spider Hoodie Red'
+  ];
+
+  const spiderTees = [
+    'Spider Tee Black',
+    'Spider Tee White',
+    'Spider Tee Grey'
+  ];
+
+  const spiderSweatpants = [
+    'Spider Sweatpants Black',
+    'Spider Sweatpants Pink'
+  ];
+
+  const spiderSets = [
+    'Spider Matching Set Black',
+    'Spider Matching Set Pink'
   ];
 
   const grids = {
@@ -706,10 +840,13 @@ function renderCatalogs(){
     newbalance: document.getElementById('nbGrid'),
     bags: document.getElementById('bagsGrid'),
     watches: document.getElementById('watchesGrid'),
-    clothing: document.getElementById('clothingGrid')
+    spiderHoodies: document.getElementById('spiderHoodiesGrid'),
+    spiderTees: document.getElementById('spiderTeesGrid'),
+    spiderSweatpants: document.getElementById('spiderSweatpantsGrid'),
+    spiderSets: document.getElementById('spiderSetsGrid')
   };
 
-  if(Object.values(grids).some(grid => !grid)) return;
+  if(!grids.asics || !grids.newbalance || !grids.bags || !grids.watches) return;
 
   if(!grids.asics.children.length){
     asics.forEach(name => grids.asics.appendChild(makeCard(name)));
@@ -727,8 +864,20 @@ function renderCatalogs(){
     watches.forEach(name => grids.watches.appendChild(makeCard(name)));
   }
 
-  if(!grids.clothing.children.length){
-    clothing.forEach(name => grids.clothing.appendChild(makeCard(name)));
+  if(grids.spiderHoodies && !grids.spiderHoodies.children.length){
+    spiderHoodies.forEach(name => grids.spiderHoodies.appendChild(makeCard(name)));
+  }
+
+  if(grids.spiderTees && !grids.spiderTees.children.length){
+    spiderTees.forEach(name => grids.spiderTees.appendChild(makeCard(name)));
+  }
+
+  if(grids.spiderSweatpants && !grids.spiderSweatpants.children.length){
+    spiderSweatpants.forEach(name => grids.spiderSweatpants.appendChild(makeCard(name)));
+  }
+
+  if(grids.spiderSets && !grids.spiderSets.children.length){
+    spiderSets.forEach(name => grids.spiderSets.appendChild(makeCard(name)));
   }
 }
 
